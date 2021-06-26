@@ -8,26 +8,62 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:id="@+id/showNumberTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textSize="@dimen/sp_100"
+                android:textSize="@dimen/sp_182"
+                android:textColor="#3FB5B5"
+                android:fontFamily="@font/maplestory_oft_bold"
+                android:layout_marginStart="@dimen/dp_180"
+                android:layout_marginTop="@dimen/dp_200"
+                android:text="1"
+                android:layout_marginLeft="@dimen/dp_200" />
 
-                tools:text="1"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:freezesText="false"
+                android:text="0:"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:fontFamily="@font/maplestory_oft_bold"
+                android:textSize="@dimen/sp_150"
+                android:textColor="#3F51B5"
+                app:layout_constraintBottom_toBottomOf="@+id/showNumberTxtView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/showNumberTxtView"
+                app:layout_constraintVertical_bias="0.100000024" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/milliTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:textSize="@dimen/sp_150"
+                android:fontFamily="@font/maplestory_oft_bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toBottomOf="@+id/secTxtView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:textColor="#3F51B5"
+                app:layout_constraintStart_toEndOf="@+id/secTxtView" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/questAreaLayout"
-                android:layout_width="@dimen/dp_900"
-                android:layout_height="@dimen/dp_900"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/border_number"
+                app:layout_constraintDimensionRatio="1:1"
                 android:layout_marginStart="@dimen/dp_50"
                 android:layout_marginEnd="@dimen/dp_50"
                 android:layout_marginBottom="@dimen/dp_200">

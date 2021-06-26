@@ -1,11 +1,14 @@
 package com.example.a1to50game
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 
 class numberLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLayout(context, attrs) {
     private var mStarTxtView: AppCompatTextView
@@ -39,6 +42,18 @@ class numberLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLa
         x = this.mX
         y = this.mY
         mStarTxtView.text = this.mQuestNum.toString()
+    }
+
+    fun currentNumber(currentNum: Int) {
+        Log.e("currentNum", "${currentNum}")
+        Log.e("current", "${mStarTxtView.text.toString().toInt()}")
+        if (mStarTxtView.text!=""&&currentNum == mStarTxtView.text.toString().toInt()){
+
+            mStarTxtView.setTextColor(Color.parseColor("#3FB5B5"))
+        }else{
+            mStarTxtView.setTextColor(Color.parseColor("#B2ADDDB9"))
+        }
+
     }
 
     fun setVisible(visible: Boolean) {

@@ -12,12 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="#1F1664"
-        android:textSize="@dimen/sp_100"
+        android:textColor="#B2ADDDB9"
+        android:textSize="@dimen/sp_114"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/imgView"
+        android:fontFamily="@font/maplestory_oft_bold"
+        app:layout_constraintDimensionRatio="1:1"
+        android:padding="@dimen/dp_5"
         tools:text="1" />
 
 
