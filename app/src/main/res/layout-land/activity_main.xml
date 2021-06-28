@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -9,16 +9,58 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/showNumberTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/sp_182"
+                android:textColor="#3FB5B5"
+                android:fontFamily="@font/maplestory_oft_bold"
+                android:layout_marginTop="@dimen/dp_200"
+                android:text="1"
+                android:layout_marginEnd="@dimen/dp_700"
+                android:layout_marginRight="@dimen/dp_200" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:"
+                android:fontFamily="@font/digital_ds"
+                android:textSize="@dimen/sp_182"
+                android:textColor="#3F51B5"
+                app:layout_constraintTop_toBottomOf="@+id/showNumberTxtView"
+                app:layout_constraintStart_toStartOf="@+id/showNumberTxtView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/milliTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:textSize="@dimen/sp_182"
+                android:fontFamily="@font/digital_ds"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toBottomOf="@+id/secTxtView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:textColor="#3F51B5"
+                app:layout_constraintStart_toEndOf="@+id/secTxtView" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/questAreaLayout"
-                android:layout_width="@dimen/dp_300"
-                android:layout_height="@dimen/dp_300"
+                android:layout_width="@dimen/dp_1000"
+                android:layout_height="@dimen/dp_1000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="@dimen/dp_50"
-                android:layout_marginEnd="@dimen/dp_50"
+                android:layout_marginStart="@dimen/dp_80"
+                android:layout_marginEnd="@dimen/dp_80"
                 android:layout_marginTop="@dimen/dp_50"
                 android:layout_marginBottom="@dimen/dp_50">
 
