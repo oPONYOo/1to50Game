@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.Dimension
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -44,10 +45,14 @@ class numberLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLa
         mStarTxtView.text = this.mQuestNum.toString()
     }
 
-    fun currentNumber(currentNum: Int) {
+    fun setTxtSize(txtSize: Float) {
+        mStarTxtView.textSize = txtSize
+    }
+
+    fun currentNumber(currentNum: Int, difficulty: Boolean) {
         Log.e("currentNum", "${currentNum}")
         Log.e("current", "${mStarTxtView.text.toString().toInt()}")
-        if (mStarTxtView.text!=""&&currentNum == mStarTxtView.text.toString().toInt()){
+        if (mStarTxtView.text!=""&&currentNum == mStarTxtView.text.toString().toInt() && difficulty){
 
             mStarTxtView.setTextColor(Color.parseColor("#3FB5B5"))
         }else{

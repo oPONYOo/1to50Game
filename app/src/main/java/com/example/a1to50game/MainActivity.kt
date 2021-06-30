@@ -1,7 +1,10 @@
 package com.example.a1to50game
 
+import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -38,6 +41,14 @@ class MainActivity : AppCompatActivity() {
 
     private var sizevalueFloat = 0f
     private var sizevalueInt = 0
+
+    private var density = 0f
+    private var changeSize: Float? = null
+    private var size_X = 0
+    private var size_Y = 0
+
+    private var difficulty = true
+
     private  var arraylist = ArrayList<Int>()
     private  var arraylist2 = ArrayList<Int>()
     private lateinit var mrandList: ArrayList<Int>
@@ -49,13 +60,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        this.getSize()
+        changeSize()
+
         if (savedInstanceState == null){
-            initGame(intent.getStringExtra("1to50").toString())
-            Log.e("1to", intent.getStringExtra("1to8").toString())
+            initGame(intent.getStringExtra("level").toString(), intent.getStringExtra("difficulty").toString())
         }
+
+
+
     }
 
-    fun initGame(GmLevel: String) {
+    fun initGame(GmLevel: String, Gmdifficulty: String) {
         when (GmLevel) {
 
             "1to50"-> {
@@ -72,6 +88,14 @@ class MainActivity : AppCompatActivity() {
                 arraylist = arrayListOf(
                     1, 2, 3, 4)
                 arraylist2 = arrayListOf(5, 6, 7, 8)
+                arraylist2.shuffle()
+            }
+            "1to18" -> {
+                sizevalueFloat = 3f
+                sizevalueInt = 3
+                arraylist = arrayListOf(
+                    1, 2, 3, 4, 5, 6, 7, 8, 9)
+                arraylist2 = arrayListOf(10, 11, 12, 13, 14, 15, 16, 17, 18)
                 arraylist2.shuffle()
             }
             "1to32" -> {
@@ -92,6 +116,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        difficulty = when(Gmdifficulty){
+            "easy" -> true
+            else -> false
+        }
 
         count = 0
         CoroutineScope(mainDispatcher).launch {
@@ -100,6 +128,27 @@ class MainActivity : AppCompatActivity() {
             genQuest()
             start()
         }
+    }
+
+    fun getSize(): Point {
+        val display = windowManager.defaultDisplay // in case of Activity
+        /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
+        val size = Point()
+        display.getSize(size) // or getSize(size)
+        Log.e("size", "${size}")
+        return size
+    }
+
+    fun changeSize() {
+        val displaySize: Point = this@MainActivity.getSize()
+        density = resources.displayMetrics.density
+        /* px, dp간의 비율 */
+        Log.e("density", "${density}")
+        size_X = (displaySize.x/density).toInt()
+        size_Y = (displaySize.y/density).toInt()
+        Log.e("size_X", "${size_X}")
+        Log.e("size_Y", "${size_Y}")
+
     }
 
     private fun genRandom(): ArrayList<Int> {
@@ -124,25 +173,31 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun genQuest() {
-        val areaWidth = binding.questAreaLayout.width / sizevalueFloat
+        changeSize = binding.questAreaLayout.width / sizevalueFloat
 
         Log.e("mrandList", "${mrandList}")
 
         for (count in 0 until mrandList.size) {
             val questLayout = numberLayout(this)
             questLayout.setQuestNum(mrandList[count])
-                .setXY(areaWidth * (count % sizevalueInt), areaWidth * (count / sizevalueInt))
+                .setXY(changeSize!! * (count % sizevalueInt), changeSize!! * (count / sizevalueInt))
                 .setVisible(true)
             questLayout.setFinally()
             binding.questAreaLayout.addView(questLayout)
+            Log.e("widthsize", "${changeSize!!.toInt()}")
+            Log.e("heightsize", "${changeSize!!.toInt()}")
+            questLayout.setTxtSize(changeSize!! / 2.8f)
+            questLayout.layoutParams.width = changeSize!!.toInt()
+            questLayout.layoutParams.height = changeSize!!.toInt()
         }
 
         for (j in 0 until mrandList.size) {
             val questLayout = binding.questAreaLayout.getChildAt(j) as numberLayout
             questLayout.setVisible(true)
             val questTxtView: AppCompatTextView = questLayout.findViewById(R.id.numberTxtView)
+
             numquestLayout.add(questLayout)
-            questLayout.currentNumber(mCurrentNum)
+            questLayout.currentNumber(mCurrentNum, difficulty)
             questLayout.setOnClickListener {
                 Log.e(TAG, "mCurrentNum =" + mCurrentNum + " | " + questTxtView.text.toString())
                 var finish = false
@@ -167,7 +222,6 @@ class MainActivity : AppCompatActivity() {
                             Log.e("mrandList2", "${mrandList2}")
 
 
-
 //                            mrandList3 = mrandList
 //                            mrandList3.remove(mrandList[j])
 //                            Log.e("j", "${j}")
@@ -180,14 +234,13 @@ class MainActivity : AppCompatActivity() {
                             questLayout.setFinally()
                             binding.questAreaLayout.addView(questLayout)
 
-
                         }
 
 
                     }
                     mCurrentNum++
                     for (j in 0 until mrandList.size) {
-                        numquestLayout[j].currentNumber(mCurrentNum)
+                        numquestLayout[j].currentNumber(mCurrentNum, difficulty)
                         Log.e("text2", "${questTxtView.text}")
                     }
                 } else {
@@ -210,11 +263,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun initSSL(cnts: ArrayList<Int>) {
-        mStimulate = cnts[0]
-        Log.e("mStimulate", "${mStimulate}")
     }
 
 
