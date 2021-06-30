@@ -42,7 +42,11 @@ class numberLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLa
     fun setFinally() {
         x = this.mX
         y = this.mY
-        mStarTxtView.text = this.mQuestNum.toString()
+        if (this.mQuestNum !=0){
+            mStarTxtView.text = this.mQuestNum.toString()
+        }else{
+            mStarTxtView.text = ""
+        }
     }
 
     fun setTxtSize(txtSize: Float) {
@@ -51,7 +55,6 @@ class numberLayout(context: Context, attrs: AttributeSet? = null) : ConstraintLa
 
     fun currentNumber(currentNum: Int, difficulty: Boolean) {
         Log.e("currentNum", "${currentNum}")
-        Log.e("current", "${mStarTxtView.text.toString().toInt()}")
         if (mStarTxtView.text!=""&&currentNum == mStarTxtView.text.toString().toInt() && difficulty){
 
             mStarTxtView.setTextColor(Color.parseColor("#3FB5B5"))

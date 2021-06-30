@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
-    private var mStimulate = 0
     private var mnextNum = 1
     private var mCurrentNum = 1
     private var mNum = 0
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private var secTime = ""
     private var milTime = ""
-
+    var finish = false
     private var sizevalueFloat = 0f
     private var sizevalueInt = 0
 
@@ -53,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     private  var arraylist2 = ArrayList<Int>()
     private lateinit var mrandList: ArrayList<Int>
     private lateinit var mrandList2: ArrayList<Int>
-    private lateinit var mrandList3: ArrayList<Int>
 
     private var numquestLayout = ArrayList<numberLayout>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,8 +64,6 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null){
             initGame(intent.getStringExtra("level").toString(), intent.getStringExtra("difficulty").toString())
         }
-
-
 
     }
 
@@ -125,6 +121,8 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(mainDispatcher).launch {
             delay(1000L)
             mrandList = genRandom()
+            count = 1
+            mrandList2 = genRandom()
             genQuest()
             start()
         }
@@ -159,6 +157,7 @@ class MainActivity : AppCompatActivity() {
             0 -> {
                 for (i in 0 until arraylist.size) {
                     idx.add(arraylist[i])
+
                 }
             }
             else -> {
@@ -184,8 +183,6 @@ class MainActivity : AppCompatActivity() {
                 .setVisible(true)
             questLayout.setFinally()
             binding.questAreaLayout.addView(questLayout)
-            Log.e("widthsize", "${changeSize!!.toInt()}")
-            Log.e("heightsize", "${changeSize!!.toInt()}")
             questLayout.setTxtSize(changeSize!! / 2.8f)
             questLayout.layoutParams.width = changeSize!!.toInt()
             questLayout.layoutParams.height = changeSize!!.toInt()
@@ -200,43 +197,33 @@ class MainActivity : AppCompatActivity() {
             questLayout.currentNumber(mCurrentNum, difficulty)
             questLayout.setOnClickListener {
                 Log.e(TAG, "mCurrentNum =" + mCurrentNum + " | " + questTxtView.text.toString())
-                var finish = false
+
                 if (mCurrentNum.toString() == questTxtView.text.toString()) {
                     questLayout.setVisible(false)
                     mnextNum = mCurrentNum+1
                     binding.showNumberTxtView.text = mnextNum.toString()
-
-                    if (mnextNum>mrandList.size*2){
-                        finish = true
-                    }
-                    if (mrandList[j] == mCurrentNum) {
-                            val prevX = questLayout.x
-                            val prevY = questLayout.y
+                    val prevX = questLayout.x
+                    val prevY = questLayout.y
+                    Log.e("marandListSize", "${mrandList.size}")
+                    if (mCurrentNum <= mrandList.size) {
+                        mrandList[j] = mrandList2[mNum]
                             binding.questAreaLayout.removeView(questLayout)
-                            count = 1
-                        mrandList2 = genRandom()
-                        if (mrandList2.size>mNum){
-                            questLayout.setQuestNum(mrandList2[mNum]).setXY(prevX, prevY)
+                        if (mrandList.size>mNum){
+                            questLayout.setQuestNum(mrandList[j]).setXY(prevX, prevY)
                                 .setVisible(true)
                             Log.e("mrandList", "${mrandList}")
-                            Log.e("mrandList2", "${mrandList2}")
-
-
-//                            mrandList3 = mrandList
-//                            mrandList3.remove(mrandList[j])
-//                            Log.e("j", "${j}")
-//                            Log.e("j", "${mrandList.get(mrandList[j])}")
-//                            Log.e("j", "${j}")
-//                            mrandList3.add(mrandList.indexOf(mrandList.get(mrandList[j])), mrandList2[mNum])
-//                            Log.e("mrandList3", "${mrandList3}")
-
                             mNum++
                             questLayout.setFinally()
                             binding.questAreaLayout.addView(questLayout)
-
                         }
-
-
+                    }else{
+                        mrandList[j] = 0
+                        questLayout.setQuestNum(0).setXY(prevX, prevY)
+                            .setVisible(true)
+                        questLayout.setFinally()
+                    }
+                    if (mnextNum>mrandList.size*2){
+                        finish = true
                     }
                     mCurrentNum++
                     for (j in 0 until mrandList.size) {
@@ -302,6 +289,8 @@ class MainActivity : AppCompatActivity() {
         outState.putIntegerArrayList("arraylist2", arraylist2)
         outState.putInt("mCurrentNum", mCurrentNum)
         outState.putInt("time", time)
+        outState.putInt("mNum", mNum)
+        outState.putBoolean("finish", finish)
 
         outState.putInt("sizevalueInt", sizevalueInt)
         outState.putFloat("sizevalueFloat", sizevalueFloat)
@@ -320,6 +309,8 @@ class MainActivity : AppCompatActivity() {
         sizevalueInt = savedInstanceState.getInt("sizevalueInt")
         sizevalueFloat = savedInstanceState.getFloat("sizevalueFloat")
 
+        finish = savedInstanceState.getBoolean("finish")
+        mNum = savedInstanceState.getInt("mNum")
         mCurrentNum = savedInstanceState.getInt("mCurrentNum")
         time = savedInstanceState.getInt("time")
         binding.secTxtView.text = savedInstanceState.getString("secTxt")
@@ -329,8 +320,11 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(mainDispatcher).launch {
             delay(1000L)
-            genQuest()
-            start()
+            if (!finish){
+                genQuest()
+                start()
+            }
+
         }
 
     }
